@@ -20,7 +20,7 @@ class server:
 					print "Main Server Down"
 	
 	def connectToMainServer():
-		self.name = "SERVER_1"
+		self.name = "SUB-SERVER"
 		self.sock = socket.socket()
 		self.host = socket.gethostname()
 		self.port = 5000
