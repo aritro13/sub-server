@@ -35,21 +35,21 @@ class server:
                 sleep(1)
 
 	def operations(self):
-		msg = self.sock.recv(1024).decode()
+		msg = self.sock.recv(1024)
                 print "MSG:", msg, type(msg)
 		if msg == 'WHO':
-		    self.sock.send(('123123123*'+self.name).encode())
+		    self.sock.send('123123123*'+self.name)
                 if msg == '':
                     self.connectToMainServer()
                 if '*' in msg:
 			msg = msg.split('*')
 			print "Query : ",msg
 			if msg[0] == 'PREPARE':
-				self.sock.send("READY".encode())
+				self.sock.send("READY")
 				net.downloadFile(msg[1],self.sock)
 				print "Chunk "+msg[1]+" is stored on "+self.name
 			if msg[0] == 'MAKE':
-				self.sock.send('READY?'.encode())
+				self.sock.send('READY?')
 				sleep(1)
 				net.uploadFile(msg[1],self.sock)
 				#print "Chunk "+msg[1]+" is on mainserver by "+self.name
