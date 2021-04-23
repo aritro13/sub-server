@@ -26,7 +26,7 @@ class server:
             self.sock = socket.socket()
             self.port = 5000
             self.host = socket.gethostname()
-            self.sock.bind(("192.168.1.102", 0))
+            self.sock.bind(("192.168.1.104", 0))
             try:
 		self.sock.connect(("192.168.1.101", self.port))
                 print "Connection Established"
@@ -35,21 +35,21 @@ class server:
                 sleep(1)
 
 	def operations(self):
-		msg = self.sock.recv(1024)
+		msg = self.sock.recv(1024).decode()
                 print "MSG:", msg, type(msg)
 		if msg == 'WHO':
-		    self.sock.send('123123123*'+self.name)
+		    self.sock.send(('123123123*'+self.name).encode())
                 if msg == '':
                     self.connectToMainServer()
                 if '*' in msg:
 			msg = msg.split('*')
 			print "Query : ",msg
 			if msg[0] == 'PREPARE':
-				self.sock.send("READY")
+				self.sock.send("READY".encode())
 				net.downloadFile(msg[1],self.sock)
 				print "Chunk "+msg[1]+" is stored on "+self.name
 			if msg[0] == 'MAKE':
-				self.sock.send('READY?')
+				self.sock.send('READY?'.encode())
 				sleep(1)
 				net.uploadFile(msg[1],self.sock)
 				#print "Chunk "+msg[1]+" is on mainserver by "+self.name
